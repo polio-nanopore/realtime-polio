@@ -1,5 +1,14 @@
 {
-  "name": "ARTIC Ebola virus protocol v2.0",
-  "description": "Amplicon based sequencing of Ebola virus (Zaire species).",
-  "url": "http://artic.network/"
-}
+    "name": "ARTIC Poliovirus protocol v1.1",
+    "description": "Amplicon based sequencing of Poliovirus.",
+    "url": "http://artic.network/",
+    "displayOptions": {
+        "readOffset": 2480,
+        "reference_fields":"display_name[display_name]"
+    },
+    "annotationOptions":{
+        "reference_fields":"display_name[display_name]",
+        "barcode_set":"pcr"
+        }
+    
+  }

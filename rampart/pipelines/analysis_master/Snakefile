@@ -1,0 +1,97 @@
+import yaml 
+from pytools.persistent_dict import PersistentDict
+
+##### Configuration #####
+
+config["output_path"] = config["output_path"].rstrip("/")
+config["annotated_path"] = config["annotated_path"].rstrip("/")
+config["basecalled_path"] = config["basecalled_path"].rstrip("/")
+
+barcodes = ""
+for i in config["barcodes"].split(','):
+    barcodes+=" {}".format(i)
+
+sample_name = config["sample_name"] if config.get("sample_name") else "_".join(config["barcodes"].split(','))
+
+stems = PersistentDict("stem_store")
+
+##### Master workflow #####
+
+rule all:
+    input:
+        config["output_path"] + f"/consensus_sequences/{sample_name}.fasta",
+        config["output_path"] + f"/reports/{sample_name}.report.md"
+
+rule binlorry:
+    input:
+    params:
+        path_to_reads = config["basecalled_path"],
+        report_dir = config["annotated_path"],
+        outdir = config["output_path"],
+        min_read_length = config["min_read_length"],
+        max_read_length = config["max_read_length"],
+        barcodes = barcodes,
+        sample_name = sample_name,
+        output_prefix= config["output_path"] + "/binned_{sample}"
+    output:
+        fastq=config["output_path"] + "/binned_{sample}.fastq",
+        csv=config["output_path"] + "/binned_{sample}.csv"
+    shell:
+        "binlorry -i {params.path_to_reads:q} "
+        "-t {params.report_dir:q} "
+        "-o {params.output_prefix:q} "
+        "-n {params.min_read_length} "
+        "-x {params.max_read_length} "
+        "-v 0 "
+        "--filter-by barcode {params.barcodes} "
+        "--out-report"
+
+rule assess_sample:
+    input:
+        reads= rules.binlorry.output.fastq,
+        csv= rules.binlorry.output.csv,
+        refs = config["references_file"]
+    params:
+        sample = "{sample}",
+        output_path = config["output_path"] + "/binned_{sample}",
+        min_reads = config["min_reads"],
+        min_pcent = config["min_pcent"],
+        path_to_script = workflow.current_basedir
+    output:
+        t = temp(config["output_path"] + "/binned_{sample}/temp.txt")
+    run:
+        for i in shell(
+            "python {params.path_to_script}/parse_ref_and_depth.py "
+            "--reads {input.reads} "
+            "--csv {input.csv} "
+            "--output_path {params.output_path} "
+            "--references {input.refs} "
+            "--min_reads {params.min_reads} "
+            "--min_pcent {params.min_pcent} "
+            "--sample {params.sample}  && touch {output.t}", iterable=True):
+
+            stems.store("analysis_stem",i)
+
+rule process_sample:
+    input:
+        rules.assess_sample.output.t,
+        config=workflow.current_basedir+"/config.yaml"
+    params:
+        sample = "{sample}",
+        output_path= config["output_path"],
+        path = workflow.current_basedir
+    output:
+        cns = config["output_path"] + "/consensus_sequences/{sample}.fasta",
+        reports = config["output_path"] + "/reports/{sample}.report.md"
+    run:
+        analysis_stem = stems.fetch("analysis_stem")
+        
+        if analysis_stem != "":
+            print("Passing {} into processing pipeline.".format(analysis_stem))
+            config["analysis_stem"]= analysis_stem
+            shell("snakemake --nolock --snakefile {params.path}/../process_sample/Snakefile "
+                        "--configfile {input.config} "
+                        "--config "
+                        "analysis_stem={config[analysis_stem]} "
+                        "output_path={params.output_path} "
+                        "sample={params.sample}")

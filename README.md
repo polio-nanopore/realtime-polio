@@ -1,20 +1,42 @@
-# artic-base
-A base template for an implementation of an ARTIC install. This can be forked and modified for specific use-cases. To do this, click the green 'Use this template' button above. You can then give your new repo a name.
+# real-time polio
+This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart) and continues downstream analysis to consensus level.
 
-You can modify the existing files to suit your use-case but avoid moving or renaming any files or directories that are in this template.
-
-If the template is updated, you will be able to merge these changes into your repository as needed.
-
-To install the `Conda` environment use:
+## Installing
+Clone this repository:
 
 ```
-conda env create -f environment.yml -n <environment name>
+git clone https://github.com/aineniamh/rampart-polio.git
 ```
 
-Where `<environment_name>` is the name you want to use (probably the same as the repo).
-
-Then activate the environment using:
+Create conda environment and activate it:
 
 ```
-conda activate <environment name>
+cd rampart-polio
+conda env create -f environment.yml
+conda activate rampart-polio
 ```
+
+## Running
+
+Create run folder:
+
+```
+mkdir [run_name]
+cd [run_name]
+```
+
+Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
+
+Run RAMPART:
+
+```
+rampart --protocol ../rampart-polio --basecalledPath ~/MinKNOW/data/reads/[run_name]/pass --annotationOptions barcode_set=[native | rapid | pcr | all]
+```
+
+`basecalledPath` should be set to whereever MinKNOW/guppy is going to write its basecalled files.
+
+Open a web browser to view [http://localhost:3000](http://localhost:3000)
+
+## Downstream analysis
+
+Can be performed within the RAMPART GUI by clicking on the button to 'analyse to consensus' or by running the analysis in parallel for all samples from the command line. 

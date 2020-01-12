@@ -1,0 +1,23 @@
+import os
+from Bio import SeqIO
+
+##### Configuration #####
+
+config["analysis_stem"]=[i for i in config["analysis_stem"].split(',')]
+
+##### Target rules #####
+
+rule all:
+    input:
+        expand(config["output_path"] + "/consensus_sequences/{sample}.fasta",sample=config["sample"]),
+        expand(config["output_path"] + "/reports/{sample}.report.md",sample=config["sample"]),
+        expand(config["output_path"] + "/binned_{sample}/{analysis_stem}.consensus_to_ref.aln.fasta",sample=config["sample"],analysis_stem=config["analysis_stem"]),
+        # expand(config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.paf",sample=config["sample"],analysis_stem=config["analysis_stem"])
+
+##### Modules #####
+
+include: "rules/map_polish.smk",
+include: "rules/align_report.smk"
+
+
+#trim primers vs putting in short references 
