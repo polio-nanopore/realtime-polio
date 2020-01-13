@@ -17,12 +17,16 @@ else:
 
 samples = config["samples"]
 barcodes = []
+barcode_string = ''
 for i in config["samples"]:
     barcodes.append(config["samples"][i])
+    barcode_string += config["samples"][i] + " "
+barcode_string = barcode_string.rstrip(" ")
 print(samples)
 print(barcodes)
-##### Workflow #####
 
+
+##### Workflow #####
 
 rule all:
     input:
@@ -37,7 +41,7 @@ rule binlorry:
         outdir = config["output_path"],
         min_read_length = config["min_read_length"],
         max_read_length = config["max_read_length"],
-        # barcodes = barcodes,
+        barcode_str = barcode_string,
         # sample_name = sample_name,
         output_prefix= config["output_path"] + "/binned"
     output:
@@ -51,8 +55,9 @@ rule binlorry:
         "-x {params.max_read_length} "
         "-v 0 "
         "--bin-by barcode "
+        "--filter-by {params.barcode_str}"
         "--out-report"
-
+        
 rule run_for_each_sample:
     input:
         config=workflow.current_basedir+"/../analysis_master/config.yaml",

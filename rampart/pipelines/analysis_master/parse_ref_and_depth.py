@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
+import csv
 
 parser = argparse.ArgumentParser(description='Parse mappings, add to headings and create report.')
 
@@ -29,24 +30,59 @@ def make_ref_dict(references):
 
 ref_dict = make_ref_dict(str(args.references))
 
-unknown=False
-unmapped_count=0
-coord_unmapped = 0
-record_count=0
+detail_dict= {}
+counts = {
+    "Sabin1":0,
+    "Sabin2":0,
+    "Sabin3":0,
+    "Poliovirus1-wt":0,
+    "Poliovirus2-wt":0,
+    "Poliovirus3-wt":0,
+    "NonPolioEV":0,
+    "*":0,
+    "?":0
+}
+total = 0
+with open(str(args.report),"w") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        total +=1
+        detail_dict[row["best_reference"]] = row["display_name"]
+        counts[row["display_name"]]+=1
+
+to_analyse = []
+for key in counts:
+    if counts[key] > args.min_reads:
+        if 100*(counts[key]/total)> args.min_pcent:
+            if i not in ['*',"?","NonPolioEV"]:
+                to_analyse.append(key)
+
+
+fw = open(args.output_path + "/reference_count_{}.csv".format(args.sample),"w")
+header = "sample,"
+count_str = f"{args.sample},"
+for i in sorted(counts):
+    header += f"{i},"
+    count_str += f"{counts[i]},"
+header = header.rstrip(',') + '\n'
+count_str = count_str.rstrip(',') + '\n'
+fw.write(header)
+fw.write(count_str)
+fw.close()
 
 report = pd.read_csv(args.report)
-report["ref_stem"]=report["best_reference"].str.split("_").str[0]
+report["ref_stem"]=report["best_reference"].split("_")[0]
 detailed_ref_count = report['best_reference'].value_counts()
-
 ref_count  = report['ref_stem'].value_counts()
-if len(ref_count) > 1:
-    fig, ax = plt.subplots(figsize=(15,11))
-    sns.barplot(ref_count.index, ref_count.values, alpha=0.8)
-    plt.title('Reference profile of sample {}'.format(args.sample))
-    plt.ylabel('Read Count', fontsize=12)
-    plt.xlabel('Reference', fontsize=12)
-    plt.xticks(rotation=20)
-    fig.savefig(args.output_path + "/reference_count.pdf")
+
+# if len(ref_count) > 1:
+#     fig, ax = plt.subplots(figsize=(15,11))
+#     sns.barplot(ref_count.index, ref_count.values, alpha=0.8)
+#     plt.title('Reference profile of sample {}'.format(args.sample))
+#     plt.ylabel('Read Count', fontsize=12)
+#     plt.xlabel('Reference', fontsize=12)
+#     plt.xticks(rotation=20)
+#     fig.savefig(args.output_path + "/reference_count_{}.pdf".format(args.sample))
 
 detail_dict= {}
 for i,x in zip(list(detailed_ref_count.index), list(detailed_ref_count.values)):
@@ -54,13 +90,12 @@ for i,x in zip(list(detailed_ref_count.index), list(detailed_ref_count.values)):
     if stem not in detail_dict:
         detail_dict[stem] = i
 
-
 total = len(report)
 refs = []
 for i,x in zip(list(ref_count.index), list(ref_count.values)):
     pcent = 100*(x/total)
     if x>args.min_reads and pcent > args.min_pcent:
-        if i not in ['*',"?"]:
+        if i.startswith("Sabin") or i.startswith("Poliovirus"):
 
             refs.append(i.split('_')[0])
 

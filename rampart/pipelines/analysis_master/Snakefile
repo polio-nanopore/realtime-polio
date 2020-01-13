@@ -50,7 +50,7 @@ rule assess_sample:
     input:
         reads= rules.binlorry.output.fastq,
         csv= rules.binlorry.output.csv,
-        refs = config["references_file"]
+        refs = workflow.current_basedir +"/../../references.fasta"
     params:
         sample = "{sample}",
         output_path = config["output_path"] + "/binned_{sample}",
