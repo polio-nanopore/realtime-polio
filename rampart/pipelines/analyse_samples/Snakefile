@@ -159,7 +159,8 @@ rule process_sample:
                         "--config "
                         "analysis_stem={config[analysis_stem]} "
                         "output_path={params.output_path} "
-                        "sample={params.sample}")
+                        "sample={params.sample} "
+                        "--rerun-incomplete")
         else:
             shell("touch {output.cns} && touch {output.reports}")
 
