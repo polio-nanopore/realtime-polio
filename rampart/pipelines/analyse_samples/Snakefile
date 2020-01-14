@@ -1,0 +1,178 @@
+import yaml 
+import csv
+from pytools.persistent_dict import PersistentDict
+
+##### Configuration #####
+
+config["basecalled_path"] = config["basecalled_path"].rstrip("/")
+
+if config.get("annotated_path"):
+    config["annotated_path"] = config["annotated_path"].rstrip("/")
+else:
+    config["annotated_path"] = "annotations"
+
+if config.get("output_path"):
+    config["output_path"] = config["output_path"].rstrip("/")
+else:
+    config["output_path"] = "binned"
+
+samples = config["samples"]
+
+stems = PersistentDict("stem_store")
+
+barcodes = []
+barcode_string = ''
+for i in config["samples"]:
+    for barcode in config["samples"][i]:
+        barcodes.append(barcode)
+        barcode_string += barcode + " "
+barcode_string = barcode_string.rstrip(" ")
+
+
+##### Workflow #####
+
+rule all:
+    input:
+        expand(config["output_path"] + "/consensus_sequences/{sample}.fasta",sample=samples),
+        expand(config["output_path"] + "/reports/{sample}.report.md",sample=samples),
+        expand(config["output_path"] + "/binned_{sample}.csv",sample=samples),
+        config["output_path"] + "/sample_composition_summary.csv"
+
+rule binlorry:
+    input:
+    params:
+        path_to_reads = config["basecalled_path"],
+        report_dir = config["annotated_path"],
+        outdir = config["output_path"],
+        min_read_length = config["min_read_length"],
+        max_read_length = config["max_read_length"],
+        barcode_str = barcode_string,
+        # sample_name = sample_name,
+        output_prefix= config["output_path"] + "/temp/binned"
+    output:
+        temp(expand(config["output_path"] + "/temp/binned_{barcode}.fastq",barcode = barcodes)),
+        temp(expand(config["output_path"] + "/temp/binned_{barcode}.csv",barcode = barcodes))
+    shell:
+        "binlorry -i {params.path_to_reads:q} "
+        "-t {params.report_dir:q} "
+        "-o {params.output_prefix:q} "
+        "-n {params.min_read_length} "
+        "-x {params.max_read_length} "
+        "-v 0 "
+        "--bin-by barcode "
+        "--filter-by barcode {params.barcode_str} "
+        "--force-output "
+        "--out-report"
+
+rule rename_to_samples:
+    input:
+        rules.binlorry.output
+    params:
+        output_prefix = config["output_path"] + "/temp/binned",
+        samples = samples,
+        sample = "{sample}"
+    output:
+        reads=config["output_path"] + "/binned_{sample}.fastq",
+        csv=config["output_path"] + "/binned_{sample}.csv"
+    run:
+        for sample in params.samples:
+            if sample == params.sample:
+                read_str = ''
+                csv_list = []
+                for barcode in list(params.samples[sample]):
+                    print("Mapping {} to {}".format(sample, barcode))
+
+                    read_file = params.output_prefix + "_" + barcode + ".fastq"
+                    csv_file = params.output_prefix + "_" + barcode + ".csv"
+
+                    read_str+=read_file + ' '
+                
+                    csv_list.append(csv_file)
+
+                shell("cat " + read_str + ">" + output.reads)
+
+                if len(csv_list) > 1:
+                    write_headers = True
+                    with open(output.csv, 'w') as fw:
+                        for csv_file in csv_list:
+                            with open(csv_file) as fr:
+                                for l in fr:
+                                    l = l.rstrip('\n')
+                                    if write_headers:
+                                        write_headers = False
+                                        if l.startswith("read_name"):
+                                            fw.write(l + '\n')
+                                    else:
+                                        fw.write(l + '\n')
+                else:
+                    shell("cp " + csv_list[0] + " " + output.csv)
+            
+            
+rule assess_sample:
+    input:
+        reads= rules.rename_to_samples.output.reads,
+        csv= rules.rename_to_samples.output.csv,
+        refs = workflow.current_basedir +"/../../references.fasta"
+    params:
+        sample = "{sample}",
+        output_path = config["output_path"] + "/binned_{sample}",
+        min_reads = config["min_reads"],
+        min_pcent = config["min_pcent"],
+        path_to_script = workflow.current_basedir
+    output:
+        t = temp(config["output_path"] + "/binned_{sample}/temp.txt"),
+        summary = config["output_path"] + "/temp/temp_{sample}_report.txt"
+    run:
+        for i in shell(
+            "python {params.path_to_script}/parse_ref_and_depth.py "
+            "--reads {input.reads} "
+            "--csv {input.csv} "
+            "--output_path {params.output_path} "
+            "--references {input.refs} "
+            "--min_reads {params.min_reads} "
+            "--min_pcent {params.min_pcent} "
+            "--out_counts {output.summary} "
+            "--sample {params.sample}  && touch {output.t}", iterable=True):
+            print(i)
+            stems.store(params.sample,i)
+
+rule process_sample:
+    input:
+        rules.assess_sample.output.t,
+        config=workflow.current_basedir+"/config.yaml"
+    params:
+        sample = "{sample}",
+        output_path= config["output_path"],
+        path = workflow.current_basedir
+    output:
+        cns = config["output_path"] + "/consensus_sequences/{sample}.fasta",
+        reports = config["output_path"] + "/reports/{sample}.report.md"
+    run:
+        analysis_stem = stems.fetch(params.sample)
+        print(params.sample, analysis_stem)
+
+        if analysis_stem != "":
+            print("Passing {} for {} into processing pipeline.".format(analysis_stem, params.sample))
+            config["analysis_stem"]= analysis_stem
+            shell("snakemake --nolock --snakefile {params.path}/../process_sample/Snakefile "
+                        "--configfile {input.config} "
+                        "--config "
+                        "analysis_stem={config[analysis_stem]} "
+                        "output_path={params.output_path} "
+                        "sample={params.sample}")
+        else:
+            shell("touch {output.cns} && touch {output.reports}")
+
+rule cat_sample_reports:
+    input:
+        expand(config["output_path"] + "/temp/temp_{sample}_report.txt", sample=samples)
+    output:
+        csv = config["output_path"] + "/sample_composition_summary.csv",
+        temp_report = temp(config["output_path"] + "/temp/temp.csv")
+    run:
+        with open(output.temp_report,"w") as fw:
+            fw.write("Sample,Sabin1,Sabin2,Sabin3,Poliovirus1-wt,Poliovirus2-wt,Poliovirus3-wt,NonPolioEV,Unmapped,AmbiguousMapping\n")
+        file_string = ' '.join(input)
+        shell("cat {output.temp_report} " + file_string + " > {output.csv}")
+        for i in input:
+            shell("rm " + i)
