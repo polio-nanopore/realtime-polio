@@ -20,10 +20,13 @@ samples = config["samples"]
 
 stems = PersistentDict("stem_store")
 
+handle = config["samples"]
+print(handle)
+samples = yaml.load(handle)
 barcodes = []
 barcode_string = ''
-for i in config["samples"]:
-    for barcode in config["samples"][i]:
+for s in samples:
+    for barcode in samples[s]:
         barcodes.append(barcode)
         barcode_string += barcode + " "
 barcode_string = barcode_string.rstrip(" ")
