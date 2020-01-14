@@ -2,7 +2,7 @@
 	"analysis": 
 		{
 			"name": "Analyse to consensus",
-            "path": "pipelines/analysis_master",
+            "path": "pipelines/analyse_samples",
             "processing": true,
             "config_file": "config.yaml",
             "config": " min_reads=50 min_pcent=0.01",
