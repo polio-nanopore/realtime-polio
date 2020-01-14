@@ -28,6 +28,7 @@ for i in config["samples"]:
         barcode_string += barcode + " "
 barcode_string = barcode_string.rstrip(" ")
 
+print(barcodes)
 
 ##### Workflow #####
 
