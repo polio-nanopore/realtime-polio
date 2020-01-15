@@ -1,4 +1,4 @@
-name: realtime-polio2
+name: realtime-polio
 channels:
   - bioconda
   - conda-forge
@@ -21,7 +21,7 @@ dependencies:
     - msgpack==0.6.2
     - binlorry==1.3.0a1
     - git+https://github.com/artic-network/Porechop.git@v0.3.1pre
-    - git+https://github.com/rmcolq/postbox.git@v0.2
+    - git+https://github.com/rmcolq/postbox.git@v0.4
     - h5py==2.7.1 
     - pytools
     - scipy==1.3.1

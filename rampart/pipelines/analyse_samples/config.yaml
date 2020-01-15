@@ -1,8 +1,8 @@
 ##### Where is the data? #####
 
 input_path: path/to/data
-annotated_path: path/to/csv
-output_path: path/to/binned #where rampart will put the binned/ filtered files 
+annotated_path: annotations
+output_path: binned #where rampart will put the binned/ filtered files 
 
 ##### Mapping reference panel #####
 
@@ -13,7 +13,7 @@ references_file: ../../references.fasta
 
 ##### Read length filtering range #####
 
-min_read_length: 800
+min_read_length: 900
 max_read_length: 1400
 
 ##### Read thresholds #####
