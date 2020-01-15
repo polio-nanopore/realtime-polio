@@ -47,7 +47,7 @@ You may also supply a barcodes.csv file that gives information about which sampl
 With this setup, to run RAMPART:
 
 ```
-rampart --protocol ~/Documents/realtime_polio/rampart/ --referencesLabel display_name
+rampart --protocol ~/Documents/realtime-polio/rampart/ --referencesLabel display_name
 ```
 
 Open a web browser to view [http://localhost:3000](http://localhost:3000)
