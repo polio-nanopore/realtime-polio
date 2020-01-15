@@ -3,6 +3,9 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
 
 <img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
 
+## IT Setup
+
+An install of Miniconda will make the setup of this pipeline on your local machine much more streamlined. To install Miniconda, visit here https://conda.io/docs/user-guide/install/ in a browser, select your type of machine (mac or linux) and follow the link to the download instructions. We recommend to install the 64-bit Python 3.6 version of Miniconda. 
 
 ## Installation
 Clone this repository:
