@@ -36,14 +36,16 @@ cd [run_name]
 
 Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
 
-Run RAMPART:
+If you have a run_configuration.json file and a barcodes.csv file, you can run RAMPART with very few command line options.
+
+The run_configuration.json can specify the path to your basecalled reads or alternatively you can input that information on the command line. `basecalledPath` should be set to wherever MinKNOW/guppy is going to write its basecalled files.
+You may also supply a barcodes.csv file that gives information about which sample corresponds to which barcode.
+
+With this setup, to run RAMPART:
 
 ```
-rampart --protocol ../rampart-polio --basecalledPath ~/MinKNOW/data/reads/[run_name]/pass \
---annotationOptions barcode_set=[native | rapid | pcr | all]
+rampart --protocol ~/Documents/realtime_polio/rampart/ --referencesLabel display_name
 ```
-
-`basecalledPath` should be set to whereever MinKNOW/guppy is going to write its basecalled files.
 
 Open a web browser to view [http://localhost:3000](http://localhost:3000)
 
@@ -52,14 +54,16 @@ More information about RAMPART can be found [here](https://github.com/artic-netw
 
 ## Downstream analysis
 
-Can be performed within the RAMPART GUI for each sample by clicking on the button to 'analyse to consensus'. The bioinformatic pipeline was developed using [snakemake](https://snakemake.readthedocs.io/en/stable/). 
+Can be performed within the RAMPART GUI for each sample by clicking on the button to 'Analyse to consensus'. The bioinformatic pipeline was developed using [snakemake](https://snakemake.readthedocs.io/en/stable/). 
 
 
-(Will change by Wednesday 13/Jan/20)
-Alternatively, all samples can be analysed by running the following (giving the path to the realtime_polio directory as demonstrated):
+Alternatively, all samples can be analysed in parallel by running the following:
+
 ```
-snakemake --snakefile path/to/realtime_polio/rampart/pipelines/analyse_all/Snakefile --configfile snake_configuration.yaml --cores 10
+postbox -p path/to/realtime_polio -t 3
 ```
+
+-t specifices the number of parallel processes to run and will speed up your analysis if running multiple samples. 
 
 ## Pipeline description
 
