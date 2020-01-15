@@ -1,4 +1,4 @@
-# real-time polio
+# real-time-polio-time
 This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart) and continues downstream analysis to consensus level.
 
 <img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
