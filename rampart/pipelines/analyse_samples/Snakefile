@@ -22,7 +22,7 @@ stems = PersistentDict("stem_store")
 
 handle = config["samples"]
 print(handle)
-samples = yaml.load(handle)
+samples = yaml.safe_load(handle)
 barcodes = []
 barcode_string = ''
 for s in samples:
