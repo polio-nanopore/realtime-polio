@@ -16,9 +16,6 @@ if config.get("output_path"):
 else:
     config["output_path"] = "analysis"
 
-
-# samples = config["samples"]
-
 stems = PersistentDict("stem_store")
 
 if config.get("samples"):
