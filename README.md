@@ -3,11 +3,6 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
 
 <img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
 
-## IT Setup
-
-An install of Miniconda will make the setup of this pipeline on your local machine much more streamlined. To install Miniconda, visit here https://conda.io/docs/user-guide/install/ in a browser, select your type of machine (mac or linux) and follow the link to the download instructions. We recommend to install the 64-bit Python 3.6 version of Miniconda. 
-
-
 ## Table of contents
 
 
@@ -51,6 +46,32 @@ conda activate realtime-polio
 ## Setting up your run
 
 
+If you have a ``run_configuration.json`` file and a ``barcodes.csv`` file, you can run RAMPART with very few command line options. A template of the configuration files needed to run both RAMPART and the downstream analysis pipeline is provided in the examples directory.
+
+The run_configuration.json can specify the path to your basecalled reads or alternatively you can input that information on the command line. `basecalledPath` should be set to wherever MinKNOW/guppy is going to write its basecalled files. If you want alter where the annotations files from RAMPART or the analysis files from the downstream pipeline are put, you can add the optional ``"annotatedPath"`` and ``"outputPath"`` options. By default the annotations are written to a directory called ``annotations`` and the analysis output is written to a directory called ``analysis``.
+
+```
+run_configuration.json
+
+{
+  "title": "MinION_run_example",
+  "basecalledPath": "fastq_pass",
+  "referencesLabel":"display_name"
+}
+```
+
+Optional for RAMPART, but required for the downstream analysis pipeline, the ``barcodes.csv`` file describes which barcode corresponds to which sample. Note that you can have more than one barcode for each sample, but they will be merged in the analysis.
+
+```
+barcodes.csv
+
+sample,barcode
+sample1,BC01
+sample2,BC02
+sample3,BC03
+sample4,BC04
+```
+
 ## Running RAMPART
 
 Create run folder:
@@ -62,10 +83,6 @@ cd [run_name]
 
 Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
 
-If you have a run_configuration.json file and a barcodes.csv file, you can run RAMPART with very few command line options.
-
-The run_configuration.json can specify the path to your basecalled reads or alternatively you can input that information on the command line. `basecalledPath` should be set to wherever MinKNOW/guppy is going to write its basecalled files.
-You may also supply a barcodes.csv file that gives information about which sample corresponds to which barcode.
 
 With this setup, to run RAMPART:
 
