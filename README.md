@@ -111,19 +111,30 @@ usage: rampart [-h] [-v] [--verbose] [--ports PORTS PORTS]
 
 ## Downstream analysis
 
+### Quick usage
 
-Can be performed within the RAMPART GUI for each sample by clicking on the button to 'Analyse to consensus'. The bioinformatic pipeline was developed using [snakemake](https://snakemake.readthedocs.io/en/stable/). 
+Checklist:
+- The conda environment ``realtime-polio`` is active.
+- ``barcodes.csv`` file with sample to barcode mapping either in the current directory or the path to it will need to be provided.
+- ``annotations`` directory with csv files from RAMPART
+- The path to basecalled ``.fastq`` files is provided either in the ``run_configuration.json`` or it will need to be specified on the command line.
 
-
-Alternatively, all samples can be analysed in parallel by running the following:
+Recommended: all samples can be analysed in parallel by editing the following command to give the path to realtime-polio and then typing it into the command line:
 
 ```
-postbox -p path/to/realtime_polio -t 3
+postbox -p path/to/realtime-polio
 ```
 
--t specifices the number of parallel processes to run and will speed up your analysis if running multiple samples. 
+```
+usage: postbox [-h] -p PROTOCOL [-q PIPELINE] [-d RUN_DIRECTORY]
+               [-r RUN_CONFIGURATION] [-c CSV] [-t THREADS]
+```
+
+Alternatively, for each sample, the downstream analysis can be performed within the RAMPART GUI by clicking on the button to 'Analyse to consensus'.
 
 ## Pipeline description
+
+The bioinformatic pipeline was developed using [snakemake](https://snakemake.readthedocs.io/en/stable/).
 
 1. The server process of ``RAMPART`` watches the directory where the reads will be produced.
 2. This snakemake takes each file produced in real-time and identifies the barcodes using [``porechop``](https://github.com/rambaut/Porechop).
