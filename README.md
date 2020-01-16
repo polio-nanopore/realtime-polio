@@ -167,6 +167,10 @@ These are the main output files with summary information and the consensus seque
 
 The ``references.fasta`` file was provided by [Alex Shaw](https://github.com/AShaw1802) and is a detailed database containing VP1 sequences from an array of poliovirus sequences, including the Sabin vaccine strains, and other enteroviruses. 
 
+## Troubleshooting
+
+If you're having issues running the pipeline, and you're certain the checklist has been ticked off, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki).
+
 ## License
 
 [GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html)
