@@ -14,22 +14,28 @@ else:
 if config.get("output_path"):
     config["output_path"] = config["output_path"].rstrip("/")
 else:
-    config["output_path"] = "binned"
+    config["output_path"] = "analysis"
 
-samples = config["samples"]
+
+# samples = config["samples"]
 
 stems = PersistentDict("stem_store")
 
-handle = config["samples"]
-print(handle)
-samples = yaml.safe_load(handle)
-barcodes = []
-barcode_string = ''
-for s in samples:
-    for barcode in samples[s]:
-        barcodes.append(barcode)
-        barcode_string += barcode + " "
-barcode_string = barcode_string.rstrip(" ")
+if config.get("samples"):
+    handle = config["samples"]
+    print(handle)
+
+    samples = yaml.safe_load(handle)
+
+    barcodes = []
+    barcode_string = ''
+    for s in samples:
+        for barcode in samples[s]:
+            barcodes.append(barcode)
+            barcode_string += barcode + " "
+    barcode_string = barcode_string.rstrip(" ")
+else:
+    print("Please provide a barcodes.csv")
 
 print(barcodes)
 
@@ -127,7 +133,7 @@ rule assess_sample:
         t = temp(config["output_path"] + "/binned_{sample}/temp.txt"),
         summary = config["output_path"] + "/temp/temp_{sample}_report.txt"
     run:
-        for i in shell(
+        for stdout_line in shell(
             "python {params.path_to_script}/parse_ref_and_depth.py "
             "--reads {input.reads} "
             "--csv {input.csv} "
@@ -137,8 +143,8 @@ rule assess_sample:
             "--min_pcent {params.min_pcent} "
             "--out_counts {output.summary} "
             "--sample {params.sample}  && touch {output.t}", iterable=True):
-            print(i)
-            stems.store(params.sample,i)
+            print(stdout_line)
+            stems.store(params.sample,stdout_line)
 
 rule process_sample:
     input:

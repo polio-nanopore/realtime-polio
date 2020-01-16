@@ -4,6 +4,26 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
 <img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
 
 
+
+## Table of contents
+
+
+  * [Requirements](#requirements)
+  * [Installation](#installation)
+  * [Setting up your run](#setting-up-your-run)
+  * [Running RAMPART](#running-rampart)
+  * [RAMPART command line options](#rampart-command-line-options)
+  * [Downstream analysis](#downstream-analysis)
+     * [Quick usage](#quick-usage)
+     * [Pipeline description](#pipeline-description)
+     * [Reference FASTA](#reference-fasta)
+     * [Output](#output)
+  * [Troubleshooting](#troubleshooting)
+  * [License](#license)
+
+## Requirements
+This pipeline will run on MacOS and Linux. An install of Miniconda will make the setup of this pipeline on your local machine much more streamlined. To install Miniconda, visit here https://conda.io/docs/user-guide/install/ in a browser, select your type of machine (mac or linux) and follow the link to the download instructions. We recommend to install the 64-bit Python 3.6 version of Miniconda. 
+
 ## Installation
 Clone this repository:
 
@@ -11,19 +31,22 @@ Clone this repository:
 git clone https://github.com/aineniamh/realtime-polio.git
 ```
 
-Create conda environment and activate it:
+1. Create the conda environment.
+This may take some time, but will only need to be done once. It allows the pipeline to access all the software it needs, including RAMPART.
 
 ```
 cd realtime-polio
 conda env create -f environment.yml
+```
+
+2. Activate the conda environment.
+
+```
 conda activate realtime-polio
 ```
 
-To deactivate the environment, simply type:
+## Setting up your run
 
-```
-conda deactivate 
-```
 
 ## Running RAMPART
 
@@ -44,15 +67,30 @@ You may also supply a barcodes.csv file that gives information about which sampl
 With this setup, to run RAMPART:
 
 ```
-rampart --protocol ~/Documents/realtime_polio/rampart/ --referencesLabel display_name
+rampart --protocol ~/Documents/realtime-polio/rampart/ --referencesLabel display_name
 ```
 
 Open a web browser to view [http://localhost:3000](http://localhost:3000)
 
 More information about RAMPART can be found [here](https://github.com/artic-network/rampart).
 
+## RAMPART command line options
+
+```
+usage: rampart [-h] [-v] [--verbose] [--ports PORTS PORTS]
+               [--protocol PROTOCOL] [--title TITLE]
+               [--basecalledPath BASECALLEDPATH]
+               [--annotatedPath ANNOTATEDPATH]
+               [--referencesPath REFERENCESPATH]
+               [--referencesLabel REFERENCESLABEL]
+               [--barcodeNames BARCODENAMES [BARCODENAMES ...]]
+               [--annotationOptions ANNOTATIONOPTIONS [ANNOTATIONOPTIONS ...]]
+               [--clearAnnotated] [--simulateRealTime SIMULATEREALTIME]
+               [--devClient] [--mockFailures]
+```
 
 ## Downstream analysis
+
 
 Can be performed within the RAMPART GUI for each sample by clicking on the button to 'Analyse to consensus'. The bioinformatic pipeline was developed using [snakemake](https://snakemake.readthedocs.io/en/stable/). 
 
@@ -78,3 +116,6 @@ postbox -p path/to/realtime_polio -t 3
     - An iterative neural-net based polishing cycle is performed per virus type to provide a consensus sequence in ``.fasta`` format.  [``racon``](https://github.com/isovic/racon) and [``minimap2``](https://github.com/lh3/minimap2) are run iteratively four times, with gap removal in each round, against the fastq reads and then a final polishing consensus-generation step is performed using [``medaka consensus``](https://github.com/nanoporetech/medaka). 
     - The pipeline produces summary of the composition of each sample is provided and a report for each virus found, including distance to Sabin if vaccine-related.
 
+## License
+
+[GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html)

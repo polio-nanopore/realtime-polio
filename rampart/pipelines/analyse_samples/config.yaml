@@ -2,7 +2,7 @@
 
 input_path: path/to/data
 annotated_path: annotations
-output_path: binned #where rampart will put the binned/ filtered files 
+output_path: analysis 
 
 ##### Mapping reference panel #####
 
@@ -19,6 +19,6 @@ max_read_length: 1400
 ##### Read thresholds #####
 
 min_reads: 50
-min_pcent: 0.001
+min_pcent: 0.01
 
 ##### Analysis Stem #####
