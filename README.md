@@ -149,9 +149,23 @@ The bioinformatic pipeline was developed using [snakemake](https://snakemake.rea
     - An iterative neural-net based polishing cycle is performed per virus type to provide a consensus sequence in ``.fasta`` format.  [``racon``](https://github.com/isovic/racon) and [``minimap2``](https://github.com/lh3/minimap2) are run iteratively four times, with gap removal in each round, against the fastq reads and then a final polishing consensus-generation step is performed using [``medaka consensus``](https://github.com/nanoporetech/medaka). 
     - The pipeline produces summary of the composition of each sample is provided and a report for each virus found, including distance to Sabin if vaccine-related.
 
-### Analysis Output
+### Output
 
+By default the downstream analysis output will be put in a directory called ``analysis``. 
 
+Within that directory will be:
+- a ``reports`` directory with a file corresponding to each sample, detailing the virus present in the sample and how many SNPS from the closest reference in the database they are.
+- a ``consensus_sequences`` directory with ``.fasta`` files for each sample. If the sample contained a mixture of viruses, all viruse sequences present at high enough levels in the sample will be in that file.
+- ``sample_composition_summary.csv`` is a summary file that gives the raw read counts for each sample that have mapped to particular virus sequences. 
+
+These are the main output files with summary information and the consensus sequences can be taken for further analysis at this point (i.e. alignments and phylogenetic trees). This directory also contains detailed output of the different steps performed in the analysis.
+
+- ``binned_sample.csv`` and ``binned_sample.fastq`` are present for each sample. These are the output of ``BinLorry``. The csv file contains the mapping information from ``RAMPART``
+- Within each ``binned_sample`` directory are many of the intermediate files produced during the analysis, including outputs of the rounds of racon polishing and medaka consensus generation. 
+
+## Reference FASTA
+
+The ``references.fasta`` file was provided by [Alex Shaw](https://github.com/AShaw1802) and is a detailed database containing VP1 sequences from an array of poliovirus sequences, including the Sabin vaccine strains, and other enteroviruses. 
 
 ## License
 
