@@ -18,6 +18,3 @@ rule all:
 
 include: "rules/map_polish.smk",
 include: "rules/align_report.smk"
-
-
-#trim primers vs putting in short references 
