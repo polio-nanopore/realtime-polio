@@ -18,23 +18,48 @@ else:
 
 stems = PersistentDict("stem_store")
 
+samples = {}
+barcode_string = ''
+barcodes = []
 if config.get("samples"):
-    handle = config["samples"]
-    print(handle)
+    try:
+        handle = config["samples"]
 
-    samples = yaml.safe_load(handle)
+        samples = yaml.safe_load(handle)
 
-    barcodes = []
-    barcode_string = ''
-    for s in samples:
-        for barcode in samples[s]:
-            barcodes.append(barcode)
-            barcode_string += barcode + " "
-    barcode_string = barcode_string.rstrip(" ")
+        for s in samples:
+            for barcode in samples[s]:
+                barcodes.append(barcode)
+                barcode_string += barcode + " "
+        barcode_string = barcode_string.rstrip(" ")
+    except:
+        handle = config["samples"]
+        print(handle)
+        sample_csv = yaml.safe_load(handle)
+        
+        barcodes = sample_csv.split(',')
+        barcode_string = ' '.join(barcodes)
+        for barcode in barcodes:
+            samples[barcode] = [barcode]
+
 else:
-    print("Please provide a barcodes.csv")
+    raise ValueError("Please provide a barcodes.csv or run_configuration.json")
 
-print(barcodes)
+##### Function Definitions #####
+
+def write_csv_files_with_only_one_header(csv_files, output_file):
+    write_headers = True
+    with open(output_file, 'w') as fw:
+        for csv_file in csv_files:
+            with open(csv_file) as fr:
+                for l in fr:
+                    l = l.rstrip('\n')
+                    if write_headers:
+                        write_headers = False
+                        if l.startswith("read_name"):
+                            fw.write(l + '\n')
+                    else:
+                        fw.write(l + '\n')
 
 ##### Workflow #####
 
@@ -54,7 +79,6 @@ rule binlorry:
         min_read_length = config["min_read_length"],
         max_read_length = config["max_read_length"],
         barcode_str = barcode_string,
-        # sample_name = sample_name,
         output_prefix= config["output_path"] + "/temp/binned"
     output:
         temp(expand(config["output_path"] + "/temp/binned_{barcode}.fastq",barcode = barcodes)),
@@ -77,48 +101,39 @@ rule rename_to_samples:
     params:
         output_prefix = config["output_path"] + "/temp/binned",
         samples = samples,
-        sample = "{sample}"
+        output_path = config["output_path"]
     output:
-        reads=config["output_path"] + "/binned_{sample}.fastq",
-        csv=config["output_path"] + "/binned_{sample}.csv"
+        reads=expand(config["output_path"] + "/binned_{sample}.fastq", sample = samples),
+        csv=expand(config["output_path"] + "/binned_{sample}.csv", sample = samples)
     run:
         for sample in params.samples:
-            if sample == params.sample:
-                read_str = ''
-                csv_list = []
-                for barcode in list(params.samples[sample]):
-                    print("Mapping {} to {}".format(sample, barcode))
+            barcodes = list(params.samples[sample])
+            read_str = ''
+            csv_list = []
+            print("Mapping {} to {}".format(barcodes, sample))
 
-                    read_file = params.output_prefix + "_" + barcode + ".fastq"
-                    csv_file = params.output_prefix + "_" + barcode + ".csv"
+            for barcode in barcodes:
+                read_file = params.output_prefix + "_" + barcode + ".fastq"
+                csv_file = params.output_prefix + "_" + barcode + ".csv"
 
-                    read_str+=read_file + ' '
-                
-                    csv_list.append(csv_file)
-
-                shell("cat " + read_str + ">" + output.reads)
-
-                if len(csv_list) > 1:
-                    write_headers = True
-                    with open(output.csv, 'w') as fw:
-                        for csv_file in csv_list:
-                            with open(csv_file) as fr:
-                                for l in fr:
-                                    l = l.rstrip('\n')
-                                    if write_headers:
-                                        write_headers = False
-                                        if l.startswith("read_name"):
-                                            fw.write(l + '\n')
-                                    else:
-                                        fw.write(l + '\n')
-                else:
-                    shell("cp " + csv_list[0] + " " + output.csv)
+                read_str+=read_file + ' '
             
-            
+                csv_list.append(csv_file)
+
+            output_reads = params.output_path + "/binned_" + sample + ".fastq"
+            output_csv = params.output_path + "/binned_" + sample + ".csv"
+
+            shell("cat " + read_str + "> " + output_reads)
+
+            if len(csv_list) > 1:
+                write_csv_files_with_only_one_header(csv_list, output_csv)
+            else:
+                shell("cp " + csv_list[0] + " " + output_csv)
+
 rule assess_sample:
     input:
-        reads= rules.rename_to_samples.output.reads,
-        csv= rules.rename_to_samples.output.csv,
+        reads= config["output_path"] + "/binned_{sample}.fastq",
+        csv= config["output_path"] + "/binned_{sample}.csv",
         refs = workflow.current_basedir +"/../../references.fasta"
     params:
         sample = "{sample}",
