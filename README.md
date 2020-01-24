@@ -1,7 +1,7 @@
 # realtime-polio
 This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart) and continues downstream analysis to consensus level.
 
-<img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
+<img src="https://github.com/aineniamh/realtime-polio/blob/master/rampart/figures/rampart_polio.png">
 
 ## Table of contents
 
@@ -169,7 +169,7 @@ The ``references.fasta`` file was provided by [Alex Shaw](https://github.com/ASh
 
 ## Troubleshooting
 
-If you're having issues running the pipeline, and you're certain the checklist has been ticked off, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki).
+If you're having issues running the pipeline, and you're certain the checklist has been tickedá, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki)
 
 ## License
 
