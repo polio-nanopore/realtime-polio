@@ -1,4 +1,4 @@
-name: realtime-polio
+name: realtime-polio-test
 channels:
   - bioconda
   - conda-forge
@@ -14,7 +14,7 @@ dependencies:
   - python=3.6
   - snakemake-minimal
   - racon=1.4.7
-  - artic-network::rampart=1.0.4
+  - artic-network::rampart=1.0
   - pip:
     - msgpack==0.6.2
     - binlorry==1.3.0a1

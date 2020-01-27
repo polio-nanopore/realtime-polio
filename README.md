@@ -56,8 +56,7 @@ run_configuration.json
 
 {
   "title": "MinION_run_example",
-  "basecalledPath": "fastq_pass",
-  "referencesLabel":"display_name"
+  "basecalledPath": "fastq_pass"
 }
 ```
 
@@ -95,7 +94,7 @@ Where `[run_name]` is whatever you are calling todays run (as specified in MinKN
 With this setup, to run RAMPART:
 
 ```
-rampart --protocol path/to/realtime-polio/rampart --referencesLabel display_name
+rampart --protocol path/to/realtime-polio/rampart 
 ```
 
 Open a web browser to view [http://localhost:3000](http://localhost:3000)
