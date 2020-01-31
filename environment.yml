@@ -1,4 +1,4 @@
-name: realtime-polio-test
+name: realtime-polio
 channels:
   - bioconda
   - conda-forge
