@@ -66,6 +66,15 @@ rule call_variants:
         bcftools call -vmO v --ploidy 10 -o {output}
         """
 
+rule call_variants:
+    input:
+        expand(config["output_path"] + "/binned_{{sample}}/error_correction/{analysis_stem}/variants.vcf", analysis_stem=config["analysis_stem"])
+    output:
+        config["output_path"] + "/binned_{sample}/variant_calls/{sample}.vcf"
+    threads:
+        2
+    shell:
+        "cat {input} > {output}"
 
 
 
