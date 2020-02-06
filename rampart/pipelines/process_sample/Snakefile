@@ -12,7 +12,7 @@ rule all:
         expand(config["output_path"] + "/consensus_sequences/{sample}.fasta",sample=config["sample"]),
         expand(config["output_path"] + "/reports/{sample}.report.md",sample=config["sample"]),
         expand(config["output_path"] + "/binned_{sample}/{analysis_stem}.consensus_to_ref.aln.fasta",sample=config["sample"],analysis_stem=config["analysis_stem"]),
-        # expand(config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.paf",sample=config["sample"],analysis_stem=config["analysis_stem"])
+        expand(config["output_path"] + "/binned_{sample}/error_correction/{analysis_stem}/variants.vcf",sample=config["sample"],analysis_stem=config["analysis_stem"])
 
 ##### Modules #####
 include: "rules/map_polish.smk",
