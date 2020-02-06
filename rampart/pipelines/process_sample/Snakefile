@@ -15,6 +15,7 @@ rule all:
         # expand(config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.paf",sample=config["sample"],analysis_stem=config["analysis_stem"])
 
 ##### Modules #####
-
 include: "rules/map_polish.smk",
 include: "rules/align_report.smk"
+
+
