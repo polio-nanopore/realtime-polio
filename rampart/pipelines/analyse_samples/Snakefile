@@ -168,7 +168,8 @@ rule process_sample:
         path = workflow.current_basedir
     output:
         cns = config["output_path"] + "/consensus_sequences/{sample}.fasta",
-        reports = config["output_path"] + "/reports/{sample}.report.md"
+        reports = config["output_path"] + "/reports/{sample}.report.md",
+        vars = config["output_path"] + "/variant_calls/{sample}.vcf"
     run:
         analysis_stem = stems.fetch(params.sample)
         print(params.sample, analysis_stem)
