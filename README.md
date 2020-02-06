@@ -1,7 +1,7 @@
 # realtime-polio
 This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart) and continues downstream analysis to consensus level.
 
-<img src="https://github.com/aineniamh/realtime_polio/blob/master/rampart/figures/rampart_polio.png">
+<img src="https://github.com/aineniamh/realtime-polio/blob/master/rampart/figures/rampart_polio.png">
 
 ## Table of contents
 
@@ -56,8 +56,7 @@ run_configuration.json
 
 {
   "title": "MinION_run_example",
-  "basecalledPath": "fastq_pass",
-  "referencesLabel":"display_name"
+  "basecalledPath": "fastq_pass"
 }
 ```
 
@@ -95,7 +94,7 @@ Where `[run_name]` is whatever you are calling todays run (as specified in MinKN
 With this setup, to run RAMPART:
 
 ```
-rampart --protocol path/to/realtime-polio/rampart --referencesLabel display_name
+rampart --protocol path/to/realtime-polio/rampart 
 ```
 
 Open a web browser to view [http://localhost:3000](http://localhost:3000)
@@ -169,7 +168,7 @@ The ``references.fasta`` file was provided by [Alex Shaw](https://github.com/ASh
 
 ## Troubleshooting
 
-If you're having issues running the pipeline, and you're certain the checklist has been ticked off, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki).
+If you're having issues running the pipeline, and you're certain the checklist has been tickedá, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki)
 
 ## License
 
