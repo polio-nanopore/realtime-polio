@@ -4,7 +4,7 @@
     "url": "http://artic.network/",
     "displayOptions": {
         "readOffset": 2480,
-        "reference_fields":"display_name[display_name]"
+        "referencesLabel":"display_name"
     },
     "annotationOptions":{
         "reference_fields":"display_name[display_name]",

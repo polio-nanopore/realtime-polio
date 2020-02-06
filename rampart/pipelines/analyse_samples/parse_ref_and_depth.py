@@ -61,8 +61,9 @@ def count_and_return_analysis_dict(report,csv_out,sample):
         reader = csv.DictReader(f)
         for row in reader:
             total +=1
-            detail_dict[row["display_name"]][row["best_reference"]]+=1
-            counts[row["display_name"]]+=1
+            if mapping_len > 700:
+                detail_dict[row["display_name"]][row["best_reference"]]+=1
+                counts[row["display_name"]]+=1
 
     count_str = f"{sample},"
     for i in counts:
