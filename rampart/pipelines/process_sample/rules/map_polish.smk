@@ -10,7 +10,7 @@ rule minimap2_racon0:
     output:
         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.paf"
     shell:
-        "minimap2 -x map-ont {input.ref} {input.reads} > {output}"
+        "minimap2 -x map-ont --paf-no-hit {input.ref} {input.reads} > {output}"
 
 rule racon1:
     input:
@@ -58,7 +58,7 @@ rule minimap2_racon1:
     output:
         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.racon1.paf"
     shell:
-        "minimap2 -x map-ont {input.ref} {input.reads} > {output}"
+        "minimap2 -x map-ont --paf-no-hit {input.ref} {input.reads} > {output}"
 
 rule racon2:
     input:
@@ -107,7 +107,7 @@ rule minimap2_racon2:
     output:
         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.racon2.paf"
     shell:
-        "minimap2 -x map-ont {input.ref} {input.reads} > {output}"
+        "minimap2 -x map-ont --paf-no-hit {input.ref} {input.reads} > {output}"
 
 rule racon3:
     input:
@@ -156,7 +156,7 @@ rule minimap2_racon3:
     output:
         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.racon3.paf"
     shell:
-        "minimap2 -x map-ont {input.ref} {input.reads} > {output}"
+        "minimap2 -x map-ont --paf-no-hit {input.ref} {input.reads} > {output}"
 
 rule racon4:
     input:
@@ -204,7 +204,7 @@ rule minimap2_racon4:
     output:
         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/mapped.racon4.paf"
     shell:
-        "minimap2 -x map-ont {input.ref} {input.reads} > {output}"
+        "minimap2 -x map-ont --paf-no-hit {input.ref} {input.reads} > {output}"
 
 rule medaka:
     input:

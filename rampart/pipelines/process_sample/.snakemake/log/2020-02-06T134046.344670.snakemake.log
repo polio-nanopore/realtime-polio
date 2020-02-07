@@ -1,0 +1,3 @@
+KeyError in line 6 of /Users/s1680070/repositories/realtime-polio/rampart/pipelines/process_sample/Snakefile:
+'analysis_stem'
+  File "/Users/s1680070/repositories/realtime-polio/rampart/pipelines/process_sample/Snakefile", line 6, in <module>

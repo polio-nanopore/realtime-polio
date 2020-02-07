@@ -1,5 +1,6 @@
 import os
 from Bio import SeqIO
+import vcf
 
 ##### Configuration #####
 
@@ -16,6 +17,8 @@ rule all:
 
 ##### Modules #####
 include: "rules/map_polish.smk",
-include: "rules/align_report.smk"
+include: "rules/align_report.smk",
+include: "rules/read_error_correction.smk"
+
 
 

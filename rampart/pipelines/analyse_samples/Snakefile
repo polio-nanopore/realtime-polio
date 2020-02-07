@@ -68,6 +68,7 @@ rule all:
         expand(config["output_path"] + "/consensus_sequences/{sample}.fasta",sample=samples),
         expand(config["output_path"] + "/reports/{sample}.report.md",sample=samples),
         expand(config["output_path"] + "/binned_{sample}.csv",sample=samples),
+        expand(config["output_path"] + "/binned_{sample}/variant_calls/{sample}.vcf",sample=samples),
         config["output_path"] + "/sample_composition_summary.csv"
 
 rule binlorry:
@@ -169,7 +170,7 @@ rule process_sample:
     output:
         cns = config["output_path"] + "/consensus_sequences/{sample}.fasta",
         reports = config["output_path"] + "/reports/{sample}.report.md",
-        vars = config["output_path"] + "/variant_calls/{sample}.vcf"
+        vars = config["output_path"] + "/binned_{sample}/variant_calls/{sample}.vcf"
     run:
         analysis_stem = stems.fetch(params.sample)
         print(params.sample, analysis_stem)
