@@ -18,6 +18,14 @@ else:
 
 stems = PersistentDict("stem_store")
 
+def prepend_barcode_stem(barcode):
+    print(barcode)
+    if type(barcode) == int: 
+        return "BC"+str(barcode)
+    elif barcode.startswith("NB") or barcode.startswith("BC"):
+        return barcode
+
+
 samples = {}
 barcode_string = ''
 barcodes = []
@@ -29,17 +37,20 @@ if config.get("samples"):
 
         for s in samples:
             for barcode in samples[s]:
-                barcodes.append(barcode)
+                checked_barcode = prepend_barcode_stem(barcode)
+                barcodes.append(checked_barcode)
                 barcode_string += barcode + " "
         barcode_string = barcode_string.rstrip(" ")
+
     except:
         handle = config["samples"]
-        print(handle)
+
         sample_csv = yaml.safe_load(handle)
-        
+
         barcodes = sample_csv.split(',')
-        barcode_string = ' '.join(barcodes)
-        for barcode in barcodes:
+        checked_barcodes = [prepend_barcode_stem(barcode) for barcode in barcodes]
+        barcode_string = ' '.join(checked_barcodes)
+        for barcode in checked_barcodes:
             samples[barcode] = [barcode]
 
 else:
@@ -120,8 +131,8 @@ rule rename_to_samples:
             
                 csv_list.append(csv_file)
 
-            output_reads = params.output_path + "/binned_" + sample + ".fastq"
-            output_csv = params.output_path + "/binned_" + sample + ".csv"
+            output_reads = params.output_path + "/binned_" + str(sample) + ".fastq"
+            output_csv = params.output_path + "/binned_" + str(sample) + ".csv"
 
             shell("cat " + read_str + "> " + output_reads)
 
