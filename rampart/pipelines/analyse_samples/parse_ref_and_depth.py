@@ -61,9 +61,14 @@ def count_and_return_analysis_dict(report,csv_out,sample):
         reader = csv.DictReader(f)
         for row in reader:
             total +=1
-            if int(row["aln_block_len"]) > 800:
-                detail_dict[row["display_name"]][row["best_reference"]]+=1
-                counts[row["display_name"]]+=1
+            try:
+                if int(row["mapping_len"]) > 800:
+                    detail_dict[row["display_name"]][row["best_reference"]]+=1
+                    counts[row["display_name"]]+=1
+            except:
+                if int(row["aln_block_len"]) > 800:
+                    detail_dict[row["display_name"]][row["best_reference"]]+=1
+                    counts[row["display_name"]]+=1
 
     count_str = f"{sample},"
     for i in counts:
