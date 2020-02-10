@@ -251,8 +251,13 @@ rule clean5:
 rule gather_files:
     input:
         expand(config["output_path"] +  "/binned_{{sample}}/{analysis_stem}.consensus.fasta", analysis_stem=config["analysis_stem"])
+    params:
+        sample = "{sample}"
     output:
         config["output_path"] + "/consensus_sequences/{sample}.fasta"
-    shell:
-        "cat {input} > {output}"
+    run:
+        with open(str(output[0]),"w") as fw:
+            for fasta in input:
+                for record in SeqIO.parse(str(fasta),"fasta"):
+                    fw.write(f">{params.sample} {record.description}\n{record.seq}\n")
 
