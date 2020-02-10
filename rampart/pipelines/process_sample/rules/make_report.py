@@ -23,7 +23,7 @@ def get_snp_locs(aln, outfile):
         col = alignment[:,i]
         if len(set(col))>1:
             
-            fw.write(f"Position {i+1}:\tReference:\t{col[0]}\tConsensus:\t{col[1]}\n")
+            fw.write(f"- Position {i+1}:\tReference:\t{col[0]}\tConsensus:\t{col[1]}\n")
 
             if 'N' not in col and 'n' not in col and '-' not in col:
                 snps+=1
@@ -34,6 +34,6 @@ if __name__ == '__main__':
 
     args = parse_args()
     with open(str(args.o), "w") as fw:
-        fw.write(f"Report for {args.sample}\n")
+        fw.write(f"## Report for {args.sample}\n")
         get_snp_locs(args.i, fw)
         
