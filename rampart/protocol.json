@@ -7,6 +7,7 @@
         "referencesLabel":"display_name"
     },
     "annotationOptions":{
+        "minimum_identity": "80",
         "reference_fields":"display_name[display_name]",
         "barcode_set":"pcr"
         }
