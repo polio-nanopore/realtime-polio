@@ -1,6 +1,6 @@
 rule align_cns_to_ref:
     input:
-       fasta = config["output_path"] + "/binned_{sample}/{analysis_stem}.consensus.fasta",
+       fasta = config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}/consensus.fasta",
        ref = config["output_path"] + "/binned_{sample}/{analysis_stem}.fasta"
     params:
         temp_file = config["output_path"] + "/binned_{sample}/temp.cns_ref_aln.fasta"
