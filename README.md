@@ -27,7 +27,7 @@ This pipeline will run on MacOS and Linux. An install of Miniconda will make the
 Clone this repository:
 
 ```
-git clone https://github.com/aineniamh/realtime-polio.git
+git clone https://github.com/polio-nanopore/realtime-polio
 ```
 
 1. Create the conda environment.
@@ -43,6 +43,8 @@ conda env create -f environment.yml
 ```
 conda activate realtime-polio
 ```
+
+More information about conda environments can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/index.html) and a conda 'cheatsheet' can be found [here](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf).
 
 ## Setting up your run
 
@@ -78,6 +80,8 @@ sample4,BC04
 - ``barcodes.csv`` file with sample to barcode mapping either in the current directory or the path to it will need to be provided.
 - ``annotations`` directory with csv files from RAMPART
 - The path to basecalled ``.fastq`` files is provided either in the ``run_configuration.json`` or it will need to be specified on the command line.
+
+Note that these file names and locations are the default setup. If you have files in other locations or with different names, this is fine, but you'll need to give RAMPART that information using the options detailed in [RAMPART command line options](#rampart-command-line-options).
 
 ## Running RAMPART
 
