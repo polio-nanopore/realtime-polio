@@ -22,8 +22,10 @@ def get_snp_locs(aln, outfile):
     for i in range(len(alignment[0])):
         col = alignment[:,i]
         if len(set(col))>1:
-            if 'N' not in col and '-' not in col:
-                fw.write(f"Position {i+1}:\tReference:\t{col[0]}\tConsensus:\t{col[1]}\n")
+            
+            fw.write(f"Position {i+1}:\tReference:\t{col[0]}\tConsensus:\t{col[1]}\n")
+
+            if 'N' not in col and 'n' not in col and '-' not in col:
                 snps+=1
 
     fw.write(f"\nTotal number of snps from {alignment[0].id}:\t{snps}\n\n")
