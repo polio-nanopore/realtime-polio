@@ -48,6 +48,16 @@ More information about conda environments can be found [here](https://docs.conda
 
 ## Setting up your run
 
+Create run folder:
+
+```
+mkdir [run_name]
+cd [run_name]
+```
+
+Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
+
+Create a ``run_configuration.json`` and a ``barcodes.csv`` file (manual).
 
 If you have a ``run_configuration.json`` file and a ``barcodes.csv`` file, you can run RAMPART with very few command line options. A template of the configuration files needed to run both RAMPART and the downstream analysis pipeline is provided in the examples directory.
 
@@ -74,6 +84,8 @@ sample3,BC03
 sample4,BC04
 ```
 
+Note: the barcode name needs to be accurate and start BC. 
+
 ## Checklist
 
 - The conda environment ``realtime-polio`` is active.
@@ -85,17 +97,7 @@ Note that these file names and locations are the default setup. If you have file
 
 ## Running RAMPART
 
-Create run folder:
-
-```
-mkdir [run_name]
-cd [run_name]
-```
-
-Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
-
-
-With this setup, to run RAMPART:
+With this set up, to run RAMPART:
 
 ```
 rampart --protocol path/to/realtime-polio/rampart 
