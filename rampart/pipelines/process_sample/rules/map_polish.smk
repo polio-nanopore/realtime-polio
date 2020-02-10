@@ -219,38 +219,38 @@ rule medaka:
     shell:
         "medaka_consensus -i {input.basecalls} -d {input.draft} -o {params.outdir} -t 2 || touch {output}"
 
-rule mafft5:
-    input:
-       fasta = rules.medaka.output,
-       ref = rules.files.params.ref
-    params:
-        temp_file = config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/temp.medaka.fasta"
-    output:
-        config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/medaka.aln.fasta"
-    shell:
-        "cat {input.ref} {input.fasta} > {params.temp_file} && "
-        "mafft {params.temp_file} > {output} && "
-        "rm {params.temp_file}"
+# rule mafft5:
+#     input:
+#        fasta = rules.medaka.output,
+#        ref = rules.files.params.ref
+#     params:
+#         temp_file = config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/temp.medaka.fasta"
+#     output:
+#         config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/medaka.aln.fasta"
+#     shell:
+#         "cat {input.ref} {input.fasta} > {params.temp_file} && "
+#         "mafft {params.temp_file} > {output} && "
+#         "rm {params.temp_file}"
 
-rule clean5:
-    input:
-        aln = rules.mafft5.output,
-        cns = rules.medaka.output
-    params:
-        path_to_script = workflow.current_basedir,
-        seq_name = "{analysis_stem}"
-    output:
-        config["output_path"] + "/binned_{sample}/{analysis_stem}.consensus.fasta"
-    shell:
-        "python {params.path_to_script}/clean.py "
-        "--alignment_with_ref {input.aln} "
-        "--name {params.seq_name} "
-        "--output_seq {output} "
-        "--polish_round medaka"
+# rule clean5:
+#     input:
+#         aln = rules.mafft5.output,
+#         cns = rules.medaka.output
+#     params:
+#         path_to_script = workflow.current_basedir,
+#         seq_name = "{analysis_stem}"
+#     output:
+#         config["output_path"] + "/binned_{sample}/{analysis_stem}.consensus.fasta"
+#     shell:
+#         "python {params.path_to_script}/clean.py "
+#         "--alignment_with_ref {input.aln} "
+#         "--name {params.seq_name} "
+#         "--output_seq {output} "
+#         "--polish_round medaka"
 
 rule gather_files:
     input:
-        expand(config["output_path"] +  "/binned_{{sample}}/{analysis_stem}.consensus.fasta", analysis_stem=config["analysis_stem"])
+        expand(config["output_path"] + "/binned_{{sample}}/medaka/{analysis_stem}/consensus.fasta", analysis_stem=config["analysis_stem"])
     params:
         sample = "{sample}"
     output:
