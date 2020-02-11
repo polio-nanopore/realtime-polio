@@ -27,7 +27,7 @@ To clone the repository you will need to use a ``git`` command, many computers w
 
 <img src="https://github.com/aineniamh/realtime-polio/blob/master/rampart/figures/xcode_popup.png" width="500">
 
-Follow the instructions to install Xcode and then try the instructions below again, you'll have git installed then! 
+Follow the instructions to install Xcode and then start the installation below again. 
 
 
 ## Installation
@@ -53,7 +53,32 @@ conda activate realtime-polio
 
 More information about conda environments can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/index.html) and a conda 'cheatsheet' can be found [here](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf).
 
+## Check the install worked 
+
+To check you have everything you need to run RAMPART, type:
+
+```
+rampart --help
+```
+
+If you see the menu shown in [RAMPART command line options](#rampart-command-line-options), you have successfully installed RAMPART. 
+
+To check you have successfully installed all the necessary software for the downstream analysis, type:
+
+```
+postbox -h
+```
+
+If the menu shown [here](#quick-usage) appears, you know you've successfully installed all the necessary software. If you get an error message at this stage, the [wiki](https://github.com/polio-nanopore/realtime-polio/wiki/Cryptic-numpy-error) contains some common troubleshooting steps. 
+
+Once you confirm everything has installed correctly, you're ready to set up your first run! 
+
 ## Setting up your run
+
+You can familiarise yourself with some basic bash commands with the document found in [resources](https://github.com/polio-nanopore/realtime-polio/blob/master/resources/basic_command_line.md).
+
+
+### Step 1:
 
 Create run folder:
 
@@ -64,7 +89,9 @@ cd [run_name]
 
 Where `[run_name]` is whatever you are calling todays run (as specified in MinKNOW).
 
-Create a ``run_configuration.json`` and a ``barcodes.csv`` file (manual).
+### Step 2:
+
+Create a ``run_configuration.json`` and a ``barcodes.csv`` file (examples are shown in [resources](https://github.com/polio-nanopore/realtime-polio/tree/master/resources/examples)).
 
 If you have a ``run_configuration.json`` file and a ``barcodes.csv`` file, you can run RAMPART with very few command line options. A template of the configuration files needed to run both RAMPART and the downstream analysis pipeline is provided in the examples directory.
 
