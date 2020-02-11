@@ -25,7 +25,7 @@ This pipeline will run on MacOSX or Linux. An install of Miniconda will make the
 
 To clone the repository you will need to use a ``git`` command, many computers will have this available to use already, however for first time terminal users on a MacOSX system, you may need to install Xcode Command Line Developer Tools. You will know if this is the case when you try to run the installation instructions below and you see this screen pop up:
 
-<img src="https://github.com/aineniamh/realtime-polio/blob/master/rampart/figures/xcode_popup.png" width="1000">
+<img src="https://github.com/aineniamh/realtime-polio/blob/master/rampart/figures/xcode_popup.png" width="500">
 
 Follow the instructions to install Xcode and then try the instructions below again, you'll have git installed then! 
 
