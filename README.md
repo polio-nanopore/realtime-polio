@@ -8,6 +8,7 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
 
   * [Requirements](#requirements)
   * [Installation](#installation)
+  * [Check the install worked](#check-the-install-worked)
   * [Setting up your run](#setting-up-your-run)
   * [Checklist](#checklist)
   * [Running RAMPART](#running-rampart)
