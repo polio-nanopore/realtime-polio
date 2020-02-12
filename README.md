@@ -20,6 +20,7 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
      * [Output](#output)
   * [Reference FASTA](#reference-fasta)
   * [Troubleshooting](#troubleshooting)
+  * [Updating your repository](#updating-your-repository)
   * [License](#license)
 
 ## Requirements
@@ -217,6 +218,22 @@ The ``references.fasta`` file was provided by [Alex Shaw](https://github.com/ASh
 ## Troubleshooting
 
 If you're having issues running the pipeline, and you're certain the checklist has been tickedá, check out some common [issues on the wiki](https://github.com/aineniamh/realtime-polio/wiki)
+
+## Updating your repository
+
+If it's been a while since you cloned the github repository to your local machine and you want to check if there has been any changes, you can simply update to the latest version of the pipeline by typing in a terminal in the realtime-polio directory:
+
+```
+git pull
+```
+
+This will sync any changes that have been made to your local computer.
+
+If you see any changes in the ``environment.yml`` file, make sure you're in the realtime-polio environment and then, you may need to type:
+
+```
+conda env update --file environment.yml 
+```
 
 ## License
 
