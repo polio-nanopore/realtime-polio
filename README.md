@@ -107,7 +107,7 @@ run_configuration.json
 }
 ```
 
-Optional for RAMPART, but required for the downstream analysis pipeline, the ``barcodes.csv`` file describes which barcode corresponds to which sample. Note that you can have more than one barcode for each sample, but they will be merged in the analysis.
+Optional for RAMPART, but required for the downstream analysis pipeline, the ``barcodes.csv`` file describes which barcode corresponds to which sample. 
 
 ```
 barcodes.csv
@@ -119,7 +119,9 @@ sample3,BC03
 sample4,BC04
 ```
 
-Note: the barcode name needs to be accurate and start BC. 
+> *Note*: the barcode name needs to be accurate and start BC. 
+
+> *Note*: the sample names should be unique, or they will try to merge and may cause the pipeline to exit. 
 
 ## Checklist
 
