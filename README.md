@@ -13,6 +13,7 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
   * [Checklist](#checklist)
   * [Running RAMPART](#running-rampart)
   * [RAMPART command line options](#rampart-command-line-options)
+  * [Stopping RAMPART](#stopping-rampart)
   * [Downstream analysis](#downstream-analysis)
      * [Quick usage](#quick-usage)
      * [Pipeline description](#pipeline-description)
@@ -158,6 +159,10 @@ usage: rampart [-h] [-v] [--verbose] [--ports PORTS PORTS]
                [--clearAnnotated] [--simulateRealTime SIMULATEREALTIME]
                [--devClient] [--mockFailures]
 ```
+
+## Stopping RAMPART
+
+If you need to stop RAMPART, you can type ``Ctrl+c`` in the terminal window running RAMPART.
 
 ## Downstream analysis
 
