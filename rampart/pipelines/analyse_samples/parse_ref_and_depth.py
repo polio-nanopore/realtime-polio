@@ -33,23 +33,23 @@ def make_ref_dict(references):
 def count_and_return_analysis_dict(report,csv_out,sample):
 
     counts = OrderedDict()
-    counts["Sabin1"]=0
-    counts["Sabin2"]=0
-    counts["Sabin3"]=0
-    counts["Poliovirus1-wt"]=0
-    counts["Poliovirus2-wt"]=0
-    counts["Poliovirus3-wt"]=0
+    counts["Sabin1-related"]=0
+    counts["Sabin2-related"]=0
+    counts["Sabin3-related"]=0
+    counts["WPV1"]=0
+    counts["WPV2"]=0
+    counts["WPV3"]=0
     counts["NonPolioEV"]=0
     counts["*"]=0
     counts["?"]=0
 
     detail_dict= {
-        "Sabin1": Counter(),
-        "Sabin2": Counter(),
-        "Sabin3": Counter(),
-        "Poliovirus1-wt": Counter(),
-        "Poliovirus2-wt": Counter(),
-        "Poliovirus3-wt": Counter(),
+        "Sabin1-related": Counter(),
+        "Sabin2-related": Counter(),
+        "Sabin3-related": Counter(),
+        "WPV1": Counter(),
+        "WPV2": Counter(),
+        "WPV3": Counter(),
         "NonPolioEV": Counter(),
         "*": Counter(),
         "?": Counter()
