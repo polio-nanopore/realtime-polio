@@ -1,6 +1,4 @@
-
-## Requirements
-This pipeline will run on MacOSX or Linux. An install of Miniconda will make the setup of this pipeline on your local machine much more streamlined. To install Miniconda, visit [here](https://docs.conda.io/en/latest/miniconda.html) in a browser, scroll to see the install link specific for your operating system (MacOSX or Linux) and follow the link to the download instructions. We recommend to install the 64-bit Python 3.7 version of Miniconda. 
+## Installation
 
 To clone the repository you will need to use a ``git`` command, many computers will have this available to use already, however for first time terminal users on a MacOSX system, you may need to install Xcode Command Line Developer Tools. You will know if this is the case when you try to run the installation instructions below and you see this screen pop up:
 
@@ -8,8 +6,6 @@ To clone the repository you will need to use a ``git`` command, many computers w
 
 Follow the instructions to install Xcode and then start the installation below again. 
 
-
-## Installation
 Clone this repository:
 
 ```
