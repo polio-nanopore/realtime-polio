@@ -5,9 +5,9 @@ This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart
 
 ## Documentation
 
-  * [Requirements](#docs/installation.md)
-  * [Installation](#docs/installation.md)
-  * [Check the install worked](#docs/installation.md)
+  * [Requirements](#https://github.com/polio-nanopore/realtime-polio/blob/master/docs/installation.md)
+  * [Installation](#https://github.com/polio-nanopore/realtime-polio/blob/master/docs/installation.md)
+  * [Check the install worked](#https://github.com/polio-nanopore/realtime-polio/blob/master/docs/installation.md)
   * [Setting up your run](#docs/setup.md)
   * [Checklist](#docs/setup.md)
   * [Running RAMPART](#docs/running_rampart.md)
