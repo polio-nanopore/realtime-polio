@@ -13,8 +13,8 @@ references_file: ../../references.fasta
 
 ##### Read length filtering range #####
 
-min_read_length: 900
-max_read_length: 1400
+min_read_length: 1000
+max_read_length: 1300
 
 ##### Read thresholds #####
 
