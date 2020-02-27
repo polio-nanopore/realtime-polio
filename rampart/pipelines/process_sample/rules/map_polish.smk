@@ -214,14 +214,41 @@ rule medaka:
         outdir=config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}"
     output:
         config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}/consensus.fasta"
-    threads:
-        2
     shell:
         "medaka_consensus -i {input.basecalls} -d {input.draft} -o {params.outdir} -t 2 || touch {output}"
 
+rule mafft5:
+    input:
+       fasta = config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}/consensus.fasta",
+       ref = rules.files.params.ref
+    params:
+        temp_file = config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/temp.medaka.fasta"
+    output:
+        config["output_path"] + "/binned_{sample}/polishing/{analysis_stem}/medaka.aln.fasta"
+    shell:
+        "cat {input.ref} {input.fasta} > {params.temp_file} && "
+        "mafft {params.temp_file} > {output} && "
+        "rm {params.temp_file}"
+
+rule check_frame_integrity:
+    input:
+        aln = rules.mafft5.output,
+        cns = config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}/consensus.fasta"
+    params:
+        path_to_script = workflow.current_basedir,
+        seq_name = "{analysis_stem}"
+    output:
+        config["output_path"] + "/binned_{sample}/medaka/{analysis_stem}/curated_consensus.fasta"
+    shell:
+        "python {params.path_to_script}/curate_indels.py "
+        "-a {input.aln} "
+        "--name {params.seq_name} "
+        "-o {output} "
+        "-r frame_curation"
+
 rule gather_files:
     input:
-        expand(config["output_path"] + "/binned_{{sample}}/medaka/{analysis_stem}/consensus.fasta", analysis_stem=config["analysis_stem"])
+        expand(config["output_path"] + "/binned_{{sample}}/medaka/{analysis_stem}/curated_consensus.fasta", analysis_stem=config["analysis_stem"])
     params:
         sample = "{sample}"
     output:
