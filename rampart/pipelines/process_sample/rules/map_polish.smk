@@ -259,3 +259,28 @@ rule gather_files:
                 for record in SeqIO.parse(str(fasta),"fasta"):
                     fw.write(f">{params.sample} {record.description}\n{record.seq}\n")
 
+rule generate_report:
+    input:
+        cns = rules.check_frame_integrity.output[0],
+        ref = rules.files.params.ref
+    params:
+        path_to_script = workflow.current_basedir,
+        sample = "{sample}_{analysis_stem}"
+    output:
+        config["output_path"] + "/binned_{sample}/report/{analysis_stem}.report.md"
+    shell:
+        """
+        python {params.path_to_script}/make_report.py \
+        -i {input.cns} \
+        -r {input.ref} \
+        -o {output} \
+        --sample {params.sample}
+        """
+
+rule gather_reports:
+    input:
+        expand(config["output_path"] + "/binned_{{sample}}/report/{analysis_stem}.report.md", analysis_stem=config["analysis_stem"])
+    output:
+        config["output_path"] + "/reports/{sample}.report.md"
+    shell:
+        "cat {input} > {output}"

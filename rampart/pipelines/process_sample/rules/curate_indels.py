@@ -72,6 +72,8 @@ def find_gaps(aln):
     indels_to_remove = []
     for i in range(len(trimmed[0])):
         col = trimmed[:,i]
+        if len(set(col))>1:
+            print(i, col)
         if len(set(col))>1 and '-' in col:
 
             print(f"Position {i+1}:\tReference:\t{col[0]}\tConsensus:\t{col[1]}")
@@ -88,7 +90,6 @@ def find_gaps(aln):
     for i in indels_to_remove:
         col = trimmed[:,i]
         remove_gaps(col)
-
 
     cns_string = ""
     for i in range(len(trimmed[0])):

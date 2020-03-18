@@ -28,12 +28,15 @@ def get_snp_locs(traceback, outfile):
                 snps+=1
     return snps
 
-def align_sequences(r,i,o):
+def align_sequences(query,reference,o):
 
     nuc_matrix = parasail.matrix_create("ACGT", 2, -1)
 
-    result_trace = parasail.nw_trace_striped_sat(r, i, 3, 2, nuc_matrix)
+    result_trace = parasail.nw_trace_striped_sat(query, reference, 3, 2, nuc_matrix)
     traceback = result_trace.get_traceback('|', '.', ' ')
+    print(traceback.ref)
+    print(traceback.comp)
+    print(traceback.query)
     snps = get_snp_locs(traceback, o)
     alignment_string = ""
     for i in range(0,len(traceback.ref),60):
@@ -69,6 +72,6 @@ if __name__ == '__main__':
             cns_seq = str(record.seq)
             cns_name = str(record.description)
 
-        align_sequences(ref_seq, cns_seq, fw)
+        align_sequences(cns_seq,ref_seq, fw)
     
         

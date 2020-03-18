@@ -18,13 +18,6 @@ else:
 
 stems = PersistentDict("stem_store")
 
-# def prepend_barcode_stem(barcode):
-#     print(barcode)
-#     if type(barcode) == int: 
-#         return "BC"+str(barcode)
-#     elif barcode.startswith("NB") or barcode.startswith("BC"):
-#         return barcode
-
 
 samples = {}
 barcode_string = ''
@@ -37,7 +30,7 @@ if config.get("samples"):
 
         for s in samples:
             for barcode in samples[s]:
-                # checked_barcode = prepend_barcode_stem(barcode)
+
                 barcodes.append(barcode)
                 barcode_string += barcode + " "
         barcode_string = barcode_string.rstrip(" ")
@@ -48,9 +41,9 @@ if config.get("samples"):
         sample_csv = yaml.safe_load(handle)
 
         barcodes = sample_csv.split(',')
-        # checked_barcodes = [prepend_barcode_stem(barcode) for barcode in barcodes]
+
         barcode_string = ' '.join(barcodes)
-        for barcode in checked_barcodes:
+        for barcode in barcodes:
             samples[barcode] = [barcode]
 
 else:
