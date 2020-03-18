@@ -13,6 +13,6 @@ rule all:
         expand(config["output_path"] + "/reports/{sample}.report.md",sample=config["sample"])
 
 ##### Modules #####
-include: "rules/map_polish.smk",
+include: "rules/map_polish.smk"
 
 
