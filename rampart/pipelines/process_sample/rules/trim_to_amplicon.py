@@ -1,4 +1,4 @@
-import csv
+0import csv
 import sys
 import argparse
 from Bio.SeqIO.QualityIO import FastqGeneralIterator
@@ -13,8 +13,11 @@ def parse_args():
     parser.add_argument("--output_reads", action="store", type=str, dest="output_reads")
     parser.add_argument("--substitution_matrix", action="store", type=str, dest="substitution_matrix")
 
-    parser.add_argument("--forward", action="store",type=str, dest="forward", default="TTTAACCTGGGTTTGTGTCAGCCTGTAATGA")
-    parser.add_argument("--reverse", action="store",type=str, dest="reverse",default="TACACCTTRTCTCTGGAGAATCCAATTT")
+#    parser.add_argument("--forward", action="store",type=str, dest="forward", default="TTTAACCTGGGTTTGTGTCAGCCTGTAATGA")
+#    parser.add_argument("--reverse", action="store",type=str, dest="reverse",default="TACACCTTRTCTCTGGAGAATCCAATTT")
+
+    parser.add_argument("--forward", action="store",type=str, dest="forward", default="TGGCGGAACCGACTACTTTGGGTG")
+    parser.add_argument("--reverse", action="store",type=str, dest="reverse",default="TCAATACGGTGTTTGCTCTTGAACTG")
 
     return parser.parse_args()
 

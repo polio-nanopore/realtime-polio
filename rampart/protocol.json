@@ -3,12 +3,11 @@
     "description": "Amplicon based sequencing of Poliovirus.",
     "url": "http://artic.network/",
     "displayOptions": {
-        "readOffset": 2480,
         "referencesLabel":"display_name"
     },
     "annotationOptions":{
         "minimum_identity": "80",
-        "reference_fields":"display_name[display_name];species[species];cluster[cluster]",
+        "reference_fields":"display_name[display_name]",
         "barcode_set":"pcr"
         }
     
