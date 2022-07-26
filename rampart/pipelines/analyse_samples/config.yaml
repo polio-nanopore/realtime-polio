@@ -6,7 +6,7 @@ output_path: analysis
 
 ##### Mapping reference panel #####
 
-references_file: /home/minionpak2/realtime-polio_EVCapsid/rampart/references.fasta
+references_file: ../../references.fasta
 
 ##### Barcodes to process #####
 
@@ -14,7 +14,7 @@ references_file: /home/minionpak2/realtime-polio_EVCapsid/rampart/references.fas
 ##### Read length filtering range #####
 
 min_read_length: 1000
-max_read_length: 9000
+max_read_length: 1300
 
 ##### Read thresholds #####
 
