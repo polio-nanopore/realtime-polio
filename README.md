@@ -1,6 +1,6 @@
 # realtime-polio
 
-## This repository is deprecated. See [polio-nanopore.github.io](polio-nanopore.github.io) for the latest resources.
+## This repository is deprecated. See [polio-nanopore.github.io](https://polio-nanopore.github.io/) for the latest resources.
 
 
 This pipeline complements [``RAMPART``](https://github.com/artic-network/rampart) and continues downstream analysis to consensus level.
